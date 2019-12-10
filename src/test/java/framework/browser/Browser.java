@@ -2,8 +2,10 @@ package framework.browser;
 
 import framework.utils.PropertiesRead;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class Browser {
@@ -46,4 +48,11 @@ public class Browser {
         getBrowser().switchTo().frame(frameName);
     }
 
+    public static void addCookie(Cookie cookie){
+        getBrowser().manage().addCookie(cookie);
+    }
+
+    public static Set<Cookie> getCookies(){
+        return getBrowser().manage().getCookies();
+    }
 }

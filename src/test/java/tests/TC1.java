@@ -4,20 +4,21 @@ import framework.browser.Browser;
 import framework.utils.PropertiesRead;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.openqa.selenium.Cookie;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import pageObjects.pages.MainPage;
+import pageObjects.pages.ExamplePage;
 
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class TC1 {
     static final Logger log = Logger.getLogger(TC1.class);
     private static final String PAGE = PropertiesRead.readFromFrameworkConfig("page");
-    String randomText = UUID.randomUUID().toString();
-    private String frameName = "mce_0_ifr";
-    private final String STRONG = "strong";
+    List<Cookie> cookies;
 
     @BeforeTest
     public void init() {
@@ -29,19 +30,13 @@ public class TC1 {
     }
 
     @Test
-    public void iFrameTest() {
-        MainPage mainPage = new MainPage();
-        log.info("iFrame page opening check");
-        Assert.assertTrue(mainPage.pageIsDisplayed());
-        mainPage.getFrame().switchToFrame(frameName);
-        mainPage.getFrame().writeRandomText(randomText);
-        log.info("Check if text is written");
-        Assert.assertEquals(randomText, mainPage.getFrame().getTextBoxText());
-        mainPage.getFrame().highlightText();
-        mainPage.getFrame().switchToDefaultContent();
-        mainPage.getFontEditor().boldFontClick();
-        log.info("Check if text is bold");
-        Assert.assertTrue(mainPage.getTextChangesInfo().toLowerCase().contains(STRONG));
+    public void cookieTest() {
+        ExamplePage examplePage = new ExamplePage();
+        Assert.assertTrue(examplePage.pageIsDisplayed());
+        for (int i=1;i<=3;i++) {
+            examplePage.addCookie(new Cookie("example_key_"+i, "example_value_"+i));
+        }
+        Set<Cookie> cookieSet = examplePage.getCookies();
     }
 
     @AfterTest
