@@ -11,6 +11,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import pageObjects.pages.ExamplePage;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -18,7 +19,7 @@ import java.util.UUID;
 public class TC1 {
     static final Logger log = Logger.getLogger(TC1.class);
     private static final String PAGE = PropertiesRead.readFromFrameworkConfig("page");
-    List<Cookie> cookies;
+    ArrayList<Cookie> cookies = new ArrayList<Cookie>();
 
     @BeforeTest
     public void init() {
@@ -35,6 +36,7 @@ public class TC1 {
         Assert.assertTrue(examplePage.pageIsDisplayed());
         for (int i=1;i<=3;i++) {
             examplePage.addCookie(new Cookie("example_key_"+i, "example_value_"+i));
+            cookies.add(new Cookie("example_key_"+i, "example_value_"+i));
         }
         Set<Cookie> cookieSet = examplePage.getCookies();
     }
